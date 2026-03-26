@@ -14,10 +14,38 @@
     <div class="request-card">
         <h5>{{ c.name }}</h5>
         <p class="small text-secondary mb-2">{{ c.location }}</p>
-        <p class="small">Members: {{ c.members|length if c.members is iterable else c.members }}</p>
+        <p class="small">Members: {{ c.member_count }}</p>
+
+        {% if c.is_member %}
+        <button class="btn btn-sm btn-outline-success" type="button" disabled>Member</button>
+        {% elif c.is_pending %}
+        <button class="btn btn-sm btn-outline-warning" type="button" disabled>Request Pending</button>
+        {% else %}
         <form method="post" action="{{ url_for('communities.join', community_id=c._id) }}">
-            <button class="btn btn-sm btn-success" type="submit">Join</button>
+            <button class="btn btn-sm btn-success" type="submit">Request to Join</button>
         </form>
+        {% endif %}
+
+        {% if c.can_manage %}
+        <div class="mt-3 pt-2 border-top">
+            <p class="small fw-semibold mb-2">Pending Requests ({{ c.pending_users|length }})</p>
+            {% for pending in c.pending_users %}
+            <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
+                <span class="small">{{ pending.name }}</span>
+                <div class="d-flex gap-2">
+                    <form method="post" action="{{ url_for('communities.approve_request', community_id=c._id, user_id=pending.id) }}">
+                        <button class="btn btn-sm btn-primary" type="submit">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('communities.reject_request', community_id=c._id, user_id=pending.id) }}">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Reject</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p class="small text-secondary mb-0">No pending join requests.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 {% else %}
     <p class="text-secondary">No communities found.</p>

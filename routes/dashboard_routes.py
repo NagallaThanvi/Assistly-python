@@ -1,4 +1,5 @@
 from functools import wraps
+from bson.objectid import ObjectId
 
 from flask import Blueprint, current_app, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -68,6 +69,35 @@ def admin_dashboard():
 
     stats = request_counts(db)
     stats["total_users"] = count_total_users(db)
+    communities = list_communities(db)
+
+    pending_user_ids: set[str] = set()
+    for community in communities:
+        pending = community.get("pending_requests", [])
+        community["pending_count"] = len(pending)
+        for user_id in pending:
+            pending_user_ids.add(user_id)
+
+    user_name_map: dict[str, str] = {}
+    pending_object_ids = []
+    for user_id in pending_user_ids:
+        try:
+            pending_object_ids.append(ObjectId(user_id))
+        except Exception:
+            continue
+
+    if pending_object_ids:
+        user_docs = db["users"].find({"_id": {"$in": pending_object_ids}}, {"name": 1})
+        user_name_map = {str(doc["_id"]): doc.get("name", "Unknown User") for doc in user_docs}
+
+    for community in communities:
+        community["pending_users"] = [
+            {
+                "id": user_id,
+                "name": user_name_map.get(user_id, "Unknown User"),
+            }
+            for user_id in community.get("pending_requests", [])
+        ]
 
     charts = generate_admin_charts(db, "static/generated")
 
@@ -76,7 +106,7 @@ def admin_dashboard():
         stats=stats,
         users=list_users(db),
         requests=list_all_requests(db),
-        communities=list_communities(db),
+        communities=communities,
         charts=charts,
     )
 
