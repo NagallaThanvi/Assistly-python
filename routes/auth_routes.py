@@ -180,8 +180,8 @@ def login_google():
     if not google:
         flash("Google login is not configured.", "warning")
         return redirect(url_for("auth.login"))
-    # Explicitly pass redirect_uri to authorize_redirect
-    redirect_uri = url_for("auth.google_callback", _external=True)
+    # Prefer configured callback to avoid mismatch behind proxies.
+    redirect_uri = current_app.config.get("GOOGLE_REDIRECT_URI") or url_for("auth.google_callback", _external=True)
     return google.authorize_redirect(redirect_uri=redirect_uri)
 
 
