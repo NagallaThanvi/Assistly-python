@@ -1,27 +1,160 @@
 {% extends 'base.html' %}
-{% block title %}Assistly | Home{% endblock %}
+{% block title %}Assistly | Community Support Platform{% endblock %}
 {% block content %}
-<div class="page-shell">
-<section class="hero-box mb-4 hero-splash">
-    <div class="row align-items-center g-4">
-        <div class="col-lg-7">
-            <span class="eyebrow">Community Operations Platform</span>
-            <h1 class="display-5 mt-2">Run local support workflows with speed, clarity, and trust.</h1>
-            <p class="lead text-secondary">Assistly gives every stakeholder a focused workspace: residents request support, volunteers execute tasks, and admins govern communities with live visibility.</p>
-            <div class="d-flex flex-wrap gap-2 mt-3">
-                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.signup') }}">Get Started</a>
-                <a class="btn btn-outline-light btn-lg" href="{{ url_for('auth.login') }}">I already have an account</a>
+<div class="page-shell landing-page">
+<!-- Hero Section -->
+<section class="hero-section py-5 py-lg-6">
+    <div class="container">
+        <div class="row align-items-center g-4 g-lg-5">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">Community Support Made Simple</h1>
+                    <p class="hero-subtitle">Connect residents, volunteers, and leaders in one trusted platform. Make requests, help others, and build stronger communities.</p>
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <a class="btn btn-primary btn-lg btn-rounded" href="{{ url_for('auth.signup') }}">Join Your Community</a>
+                        <a class="btn btn-outline-primary btn-lg btn-rounded" href="{{ url_for('auth.login') }}">Sign In</a>
+                    </div>
+                    <p class="helper-text mt-3">No credit card required. Get started in 2 minutes.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="feature-grid">
+                        <div class="feature-card feature-card-1">
+                            <div class="feature-icon"><i class="bi bi-hand-thumbs-up"></i></div>
+                            <div class="feature-label">For Residents</div>
+                        </div>
+                        <div class="feature-card feature-card-2">
+                            <div class="feature-icon"><i class="bi bi-people"></i></div>
+                            <div class="feature-label">For Volunteers</div>
+                        </div>
+                        <div class="feature-card feature-card-3">
+                            <div class="feature-icon"><i class="bi bi-speedometer2"></i></div>
+                            <div class="feature-label">For Leaders</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-5">
-            <div class="card section-card">
-                <div class="card-body">
-                    <h5>Launch-ready platform essentials</h5>
-                    <ul class="mb-0">
-                        <li>Role-aware dashboards for resident, volunteer, and admin operations</li>
-                        <li>Structured request lifecycle with clear ownership and status visibility</li>
-                        <li>Community membership approvals with governed access control</li>
-                        <li>Analytics snapshots for service quality and response trends</li>
+    </div>
+</section>
+
+<!-- How it Works Section -->
+<section class="how-it-works py-5 py-lg-6 bg-accent">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">How Assistly Works</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Request Help</h4>
+                    <p class="text-secondary">Residents post requests for community support they need.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Volunteers Respond</h4>
+                    <p class="text-secondary">Volunteers see requests and join in to help.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>Track Progress</h4>
+                    <p class="text-secondary">Real-time updates keep everyone informed.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>Build Community</h4>
+                    <p class="text-secondary">Celebrate wins and strengthen bonds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Features Section -->
+<section class="key-features py-5 py-lg-6">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Everything You Need</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-lightning"></i></div>
+                <h5>Fast & Simple</h5>
+                <p class="text-secondary">Clean interface. No complicated setup. Just create, help, and track.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-shield-check"></i></div>
+                <h5>Safe & Secure</h5>
+                <p class="text-secondary">Role-based access ensures only the right people see the right information.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-eye"></i></div>
+                <h5>Full Visibility</h5>
+                <p class="text-secondary">Leaders see real-time metrics. Everyone stays in the loop.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-chat-dots"></i></div>
+                <h5>Community Chat</h5>
+                <p class="text-secondary">Discuss requests and celebrate achievements together.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-graph-up"></i></div>
+                <h5>Track Impact</h5>
+                <p class="text-secondary">Analytics show what's working and where to focus.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-item-icon"><i class="bi bi-award"></i></div>
+                <h5>Celebrate Volunteers</h5>
+                <p class="text-secondary">Leaderboards recognize top helpers in your community.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Role Highlight Section -->
+<section class="roles-section py-5 py-lg-6 bg-accent">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Choose Your Role</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="role-card">
+                    <div class="role-icon"><i class="bi bi-person"></i></div>
+                    <h4>I Need Help</h4>
+                    <p class="text-secondary">Post requests for community support and connect with volunteers.</p>
+                    <ul class="role-benefits">
+                        <li>Describe what you need</li>
+                        <li>Track progress in real-time</li>
+                        <li>Thank helpers directly</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="role-card">
+                    <div class="role-icon"><i class="bi bi-hand-thumbs-up"></i></div>
+                    <h4>I Want to Help</h4>
+                    <p class="text-secondary">Browse requests and volunteer your time to support neighbors.</p>
+                    <ul class="role-benefits">
+                        <li>Find meaningful tasks</li>
+                        <li>Complete work your way</li>
+                        <li>Earn recognition</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6 mx-auto">
+                <div class="role-card bg-primary text-white">
+                    <div class="role-icon"><i class="bi bi-speedometer2"></i></div>
+                    <h4>Lead a Community</h4>
+                    <p>Manage members, approve requests, and see exactly how your community is thriving.</p>
+                    <ul class="role-benefits">
+                        <li>Approve community members</li>
+                        <li>Review all activity</li>
+                        <li>Monitor service quality</li>
                     </ul>
                 </div>
             </div>
@@ -29,41 +162,31 @@
     </div>
 </section>
 
-<section class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="stats-card h-100">
-            <div class="small text-secondary">Unified Operations</div>
-            <div class="metric">1 hub</div>
-            <div class="small text-secondary">for requests, approvals, and volunteer execution.</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card h-100">
-            <div class="small text-secondary">Policy-driven access</div>
-            <div class="metric">RBAC</div>
-            <div class="small text-secondary">permission-safe workflows scoped by role and responsibility.</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card h-100">
-            <div class="small text-secondary">Live awareness</div>
-            <div class="metric">Real-time</div>
-            <div class="small text-secondary">status updates and notifications for coordinated action.</div>
+<!-- CTA Section -->
+<section class="cta-section py-5 py-lg-6">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Make a Difference?</h2>
+        <p class="lead text-secondary mb-5">Join thousands of communities connecting neighbors with support.</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a class="btn btn-primary btn-lg btn-rounded" href="{{ url_for('auth.signup') }}">Get Started Free</a>
+            <a class="btn btn-outline-primary btn-lg btn-rounded" href="{{ url_for('auth.login') }}">Already a Member</a>
         </div>
     </div>
 </section>
 
-<section id="about" class="card mb-4">
-    <div class="card-body">
-        <h3>Official Platform Positioning</h3>
-        <p class="mb-0 text-secondary">Assistly is designed as an accountable community operations platform with role-based permissions, auditable workflows, and operational dashboards for transparent service delivery.</p>
+<!-- Footer -->
+<footer class="footer py-4 border-top">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="mb-0 text-secondary">Assistly © 2024 — Making community support simple.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-0 text-secondary small">Build stronger communities together</p>
+            </div>
+        </div>
     </div>
-</section>
+</footer>
 
-<section id="services" class="row g-3">
-    <div class="col-md-4"><div class="card section-card h-100"><div class="card-body"><h5>Request Management</h5><p class="text-secondary">Create, update, and manage service requests with status tracking.</p></div></div></div>
-    <div class="col-md-4"><div class="card section-card h-100"><div class="card-body"><h5>Volunteer Workflow</h5><p class="text-secondary">Accept eligible requests and mark tasks completed when done.</p></div></div></div>
-    <div class="col-md-4"><div class="card section-card h-100"><div class="card-body"><h5>Community Operations</h5><p class="text-secondary">Browse, join, and manage communities with role-based controls.</p></div></div></div>
-</section>
 </div>
 {% endblock %}

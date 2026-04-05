@@ -1770,3 +1770,400 @@ html[data-theme="dark"] .btn-primary {
         animation: none !important;
     }
 }
+
+/* Landing Page Styles */
+.landing-page {
+    padding: 0;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 5%, transparent 95%), color-mix(in srgb, var(--primary) 8%, transparent 92%));
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-title {
+    font-family: "Sora", sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    max-width: 500px;
+}
+
+.btn-rounded {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary.btn-rounded {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn-primary.btn-rounded:hover {
+    background: color-mix(in srgb, var(--primary) 85%, #000 15%);
+    border-color: color-mix(in srgb, var(--primary) 85%, #000 15%);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary.btn-rounded {
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    background: transparent;
+}
+
+.btn-outline-primary.btn-rounded:hover {
+    background: color-mix(in srgb, var(--primary) 8%, transparent 92%);
+    transform: translateY(-2px);
+}
+
+.helper-text {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.feature-card-1 {
+    grid-column: 1 / 2;
+}
+
+.feature-card-2 {
+    grid-column: 2 / 3;
+}
+
+.feature-card-3 {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.feature-label {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.bg-accent {
+    background: var(--bg-accent);
+}
+
+.section-title {
+    font-family: "Sora", sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3rem;
+}
+
+.step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.step-card h4 {
+    font-family: "Sora", sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+.step-card p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.feature-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.feature-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--primary) 10%, transparent 90%);
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item h5 {
+    font-family: "Sora", sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+.feature-item p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.roles-section {
+    background: var(--bg-accent);
+}
+
+.role-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.role-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.role-card.bg-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.role-card.bg-primary .role-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.role-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--primary) 10%, transparent 90%);
+    color: var(--primary);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.role-card h4 {
+    font-family: "Sora", sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.role-card.bg-primary h4 {
+    color: white;
+}
+
+.role-card p {
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.role-card.bg-primary p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.role-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.role-benefits li {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.role-card.bg-primary .role-benefits li {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.role-benefits li:before {
+    content: "✓";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.role-card.bg-primary .role-benefits li:before {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.cta-section {
+    text-align: center;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 5%, transparent 95%), color-mix(in srgb, var(--primary) 8%, transparent 92%));
+}
+
+.cta-section h2 {
+    font-family: "Sora", sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.cta-section .lead {
+    margin-bottom: 1.5rem;
+}
+
+.footer {
+    background: var(--surface-soft);
+    border-top: 1px solid var(--border);
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* Responsive Landing Page */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card-3 {
+        grid-column: 1 / -1;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .step-card,
+    .feature-item,
+    .role-card {
+        padding: 1.5rem;
+    }
+
+    .cta-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
