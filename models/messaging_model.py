@@ -23,7 +23,7 @@ def get_or_create_conversation(db, user1_id: str, user2_id: str):
     if not conversation:
         conversation_doc = {
             "participants": participants,
-            "user_ids": {user1_id, user2_id},
+            "user_ids": participants,
             "last_message": None,
             "last_message_at": None,
             "created_at": datetime.utcnow(),

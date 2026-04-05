@@ -94,7 +94,7 @@
                                         <div 
                                             class="progress-bar" 
                                             role="progressbar" 
-                                            style="width: {% set max_requests = category_metrics|map(attribute='total_requests')|max %}{{ (cat.total_requests / max_requests * 100)|int }}%">
+                                            data-width="{{ cat.width_percent }}">
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                         <h5 class="mb-4">Request Activity (Last 30 Days)</h5>
                         <div style="height: 200px; background: linear-gradient(to right, rgba(36, 95, 205, 0.1), transparent); border-radius: 8px; display: flex; align-items: flex-end; gap: 2px; padding: 20px;">
                             {% for day in daily_activity[-7:] %}
-                            <div style="flex: 1; height: {{ (day.requests / 10 * 100)|max(5) }}%; background: var(--primary); border-radius: 4px 4px 0 0; position: relative;" 
+                            <div class="activity-bar" data-height="{{ day.height_percent }}" 
                                  title="{{ day.date }}: {{ day.requests }} requests">
                             </div>
                             {% endfor %}
@@ -228,5 +228,24 @@
         border-bottom: none;
         padding-bottom: 0;
     }
+
+    .activity-bar {
+        flex: 1;
+        background: var(--primary);
+        border-radius: 4px 4px 0 0;
+        position: relative;
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-width]').forEach(function (el) {
+            el.style.width = el.dataset.width + '%';
+        });
+
+        document.querySelectorAll('[data-height]').forEach(function (el) {
+            el.style.height = el.dataset.height + '%';
+        });
+    });
+</script>
 {% endblock %}

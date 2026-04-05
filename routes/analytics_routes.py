@@ -1,5 +1,5 @@
 """Routes for analytics and insights dashboard."""
-from flask import Blueprint, current_app, jsonify, render_template
+from flask import Blueprint, current_app, jsonify, render_template, request
 from flask_login import current_user, login_required
 
 from models.analytics_model import (
@@ -21,12 +21,30 @@ def analytics_dashboard():
     """Display comprehensive analytics dashboard."""
     # Only admins and community leaders can view full analytics
     # For now, allow all authenticated users but show personalized data
-    
+
     metrics = get_platform_metrics(current_app.db, days=30)
     category_metrics = get_request_metrics_by_category(current_app.db, days=30)
     leaderboard = get_volunteer_leaderboard(current_app.db, limit=10)
     daily_activity = get_daily_activity(current_app.db, days=30)
     user_insights = get_user_insights(current_app.db, current_user.id)
+
+    max_category_requests = max((item["total_requests"] for item in category_metrics), default=1)
+    category_metrics = [
+        {
+            **item,
+            "width_percent": max(5, int((item["total_requests"] / max_category_requests) * 100))
+            if max_category_requests else 5,
+        }
+        for item in category_metrics
+    ]
+
+    daily_activity = [
+        {
+            **item,
+            "height_percent": max(5, min(100, int((item["requests"] / 10) * 100))),
+        }
+        for item in daily_activity
+    ]
     
     return render_template(
         "analytics_dashboard.html",
