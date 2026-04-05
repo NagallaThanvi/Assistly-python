@@ -7,14 +7,26 @@ def _requests(db):
 
 
 def create_request(db, payload: dict, user_id: str, community_id: str | None = None):
+    # Parse tags from comma-separated string or list
+    tags = payload.get("tags", "")
+    if isinstance(tags, str):
+        tags = [t.strip().lower() for t in tags.split(",") if t.strip()]
+    else:
+        tags = [t.strip().lower() for t in tags if t.strip()]
+    
     doc = {
         "title": payload["title"].strip(),
         "description": payload["description"].strip(),
         "category": payload["category"].strip(),
+        "tags": tags,
         "status": "Open",
         "user_id": user_id,
         "community_id": community_id,
         "accepted_by": None,
+        "completion_confirmed": False,
+        "confirmed_by_user_at": None,
+        "rating": None,
+        "review": None,
         "location": {
             "text": payload.get("location_text", "").strip(),
             "lat": payload.get("lat"),
@@ -126,4 +138,69 @@ def request_counts(db):
         "completed": completed,
         "in_progress": in_progress,
         "open": open_count,
+    }
+
+
+def confirm_request_completion(db, request_id: str, user_id: str):
+    """Resident confirms that the volunteer task is completed."""
+    return _requests(db).update_one(
+        {"_id": ObjectId(request_id), "user_id": user_id, "status": "Completed"},
+        {
+            "$set": {
+                "completion_confirmed": True,
+                "confirmed_by_user_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow(),
+            }
+        },
+    )
+
+
+def rate_request(db, request_id: str, user_id: str, rating: int, review: str = ""):
+    """Resident rates the volunteer's work (1-5 stars)."""
+    if not 1 <= rating <= 5:
+        return {"ok": False, "reason": "Rating must be between 1 and 5"}
+    
+    result = _requests(db).update_one(
+        {"_id": ObjectId(request_id), "user_id": user_id},
+        {
+            "$set": {
+                "rating": rating,
+                "review": review.strip(),
+                "updated_at": datetime.utcnow(),
+            }
+        },
+    )
+    return {"ok": result.modified_count == 1}
+
+
+def get_request_by_id(db, request_id: str):
+    try:
+        return _requests(db).find_one({"_id": ObjectId(request_id)})
+    except Exception:
+        return None
+
+
+def get_volunteer_stats(db, volunteer_id: str):
+    """Get volunteer performance stats (ratings, completion rate)."""
+    completed = _requests(db).count_documents(
+        {"accepted_by": volunteer_id, "status": "Completed"}
+    )
+    rated = _requests(db).count_documents(
+        {"accepted_by": volunteer_id, "rating": {"$exists": True, "$ne": None}}
+    )
+    
+    ratings = list(
+        _requests(db).aggregate([
+            {"$match": {"accepted_by": volunteer_id, "rating": {"$exists": True, "$ne": None}}},
+            {"$group": {"_id": None, "avg_rating": {"$avg": "$rating"}, "count": {"$sum": 1}}}
+        ])
+    )
+    
+    avg_rating = ratings[0]["avg_rating"] if ratings else 0
+    
+    return {
+        "completed_requests": completed,
+        "rated_by_users": rated,
+        "average_rating": round(avg_rating, 2),
+        "rating_count": rated,
     }

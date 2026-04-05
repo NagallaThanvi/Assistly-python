@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Volunteer Profile - Assistly{% endblock %}
+{% block content %}
+<div class="page-shell">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% if volunteer %}
+                <!-- Profile Header -->
+                <div class="card section-card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start justify-content-between mb-4">
+                            <div>
+                                <h2>Volunteer Profile</h2>
+                                <p class="text-secondary mb-0">ID: {{ volunteer_id[:12] }}...</p>
+                            </div>
+                            <div class="text-end">
+                                <div class="display-6">
+                                    {% for i in range(5) %}
+                                        {% if i < volunteer.average_rating|int %}
+                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
+                                        {% else %}
+                                        <i class="bi bi-star" style="color: #d9e2f0;"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <strong>{{ volunteer.average_rating }}</strong> / 5
+                                <div class="small text-secondary">({{ volunteer.rating_count }} ratings)</div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Grid -->
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 rounded" style="background: var(--bg-accent);">
+                                    <div class="small text-secondary">Tasks Completed</div>
+                                    <div class="metric">{{ volunteer.completed_requests or 0 }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 rounded" style="background: var(--bg-accent);">
+                                    <div class="small text-secondary">Rated by Users</div>
+                                    <div class="metric">{{ volunteer.rated_by_users or 0 }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 rounded" style="background: var(--bg-accent);">
+                                    <div class="small text-secondary">Member Since</div>
+                                    <div class="metric" style="font-size: 1rem;">
+                                        {{ volunteer.created_at.strftime('%b %Y') if volunteer.get('created_at') else 'N/A' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                {% if volunteer.skills %}
+                <div class="card section-card mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3">Skills</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for skill in volunteer.skills %}
+                            <span class="chip">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Recent Reviews -->
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Recent Reviews</h5>
+                        {% if volunteer.recent_ratings %}
+                            {% for rating in volunteer.recent_ratings %}
+                            <div class="review-item mb-4 pb-4 border-bottom">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div>
+                                        <strong>Rated by User</strong>
+                                        <div class="small text-warning">
+                                            {% for i in range(5) %}
+                                                {% if i < rating.rating %}
+                                                <i class="bi bi-star-fill"></i>
+                                                {% else %}
+                                                <i class="bi bi-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">
+                                        {{ rating.created_at.strftime('%b %d, %Y') }}
+                                    </small>
+                                </div>
+                                {% if rating.review %}
+                                <p class="text-secondary mb-0">{{ rating.review }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <p class="text-secondary mb-0">No reviews yet. Be the first to rate this volunteer!</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="mt-4">
+                    <a href="{{ url_for('messaging.conversation_page', other_user_id=volunteer_id) }}" 
+                       class="btn btn-primary">
+                        <i class="bi bi-chat-dots me-2"></i>Message This Volunteer
+                    </a>
+                </div>
+                {% else %}
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-circle me-2"></i>Volunteer profile not found.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .review-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .stat-box {
+        text-align: center;
+    }
+
+    .chip {
+        display: inline-block;
+        padding: 6px 12px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}

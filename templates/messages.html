@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Messages - Assistly{% endblock %}
+{% block content %}
+<div class="page-shell">
+    <div class="container-fluid">
+        <div class="row h-500">
+            <!-- Conversations List -->
+            <div class="col-lg-4 border-right conversation-list">
+                <div class="p-3 border-bottom">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">Messages</h5>
+                        {% if unread_count > 0 %}
+                        <span class="badge bg-danger">{{ unread_count }} New</span>
+                        {% endif %}
+                    </div>
+                    <input 
+                        type="text" 
+                        class="form-control form-control-sm" 
+                        id="conversationSearch" 
+                        placeholder="Search conversations..."
+                    >
+                </div>
+
+                <div class="conversation-items" style="max-height: calc(100vh - 250px); overflow-y: auto;">
+                    {% if conversations %}
+                        {% for conv in conversations %}
+                        <a href="{{ url_for('messaging.conversation_page', other_user_id=conv.other_user_id) }}" 
+                           class="conversation-item d-block p-3 text-decoration-none text-reset border-bottom">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <strong>{{ conv.other_user_name }}</strong>
+                                <small class="text-muted">
+                                    {% if conv.last_message_at %}
+                                    {{ conv.last_message_at.strftime('%b %d') }}
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <small class="text-muted text-truncate d-block">
+                                {{ conv.last_message or 'No messages yet' }}
+                            </small>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                    <div class="p-4 text-center text-muted">
+                        <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
+                        <p>No conversations yet.</p>
+                        <small>Start a conversation to message someone!</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="col-lg-8 d-flex flex-column" style="height: 600px;">
+                <div class="flex-grow-1 p-4 overflow-y-auto" id="messageArea">
+                    <div class="text-center text-muted">
+                        <i class="bi bi-chat-dots" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <p>Select a conversation to start messaging</p>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <div class="p-3 border-top">
+                    <form id="messageForm" class="d-flex gap-2">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            class="form-control" 
+                            placeholder="Type your message..."
+                            maxlength="500"
+                        >
+                        <button type="submit" class="btn btn-primary" id="sendBtn">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .conversation-item {
+        transition: background-color 0.2s ease;
+    }
+
+    .conversation-item:hover {
+        background-color: var(--surface-soft);
+    }
+
+    .conversation-item.active {
+        background-color: var(--primary-soft);
+        border-left: 4px solid var(--primary);
+    }
+
+    .message-bubble {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        word-wrap: break-word;
+    }
+
+    .message-bubble.sent {
+        background: var(--primary);
+        color: white;
+        margin-left: auto;
+    }
+
+    .message-bubble.received {
+        background: var(--surface-soft);
+    }
+</style>
+
+<script>
+    // Load conversations on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadConversations();
+    });
+
+    function loadConversations() {
+        fetch('{{ url_for("messaging.conversations_api") }}')
+            .then(r => r.json())
+            .then(data => {
+                // Update UI with conversations
+                console.log('Conversations:', data);
+            });
+    }
+
+    // Send message form
+    document.getElementById('messageForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const text = document.getElementById('messageInput').value;
+        if (text.trim()) {
+            // TODO: Send message via API
+            console.log('Send message:', text);
+        }
+    });
+</script>
+{% endblock %}

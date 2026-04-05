@@ -46,11 +46,17 @@
             <a class="workspace-link {% if request.endpoint == 'communities.personal_chat' %}active{% endif %}" href="{{ url_for('communities.personal_chat') }}">
                 <i class="bi bi-chat-dots"></i><span>Community Chat</span>
             </a>
+            <a class="workspace-link {% if request.endpoint == 'messaging.messages_page' %}active{% endif %}" href="{{ url_for('messaging.messages_page') }}">
+                <i class="bi bi-envelope"></i><span>Messages</span>
+            </a>
             <a class="workspace-link {% if request.endpoint == 'dashboard.notifications_page' %}active{% endif %}" href="{{ url_for('dashboard.notifications_page') }}">
                 <i class="bi bi-bell"></i><span>Notifications</span>
             </a>
             <a class="workspace-link {% if request.endpoint == 'dashboard.leaderboard_page' %}active{% endif %}" href="{{ url_for('dashboard.leaderboard_page') }}">
                 <i class="bi bi-trophy"></i><span>Leaderboard</span>
+            </a>
+            <a class="workspace-link {% if request.endpoint == 'analytics.analytics_dashboard' %}active{% endif %}" href="{{ url_for('analytics.analytics_dashboard') }}">
+                <i class="bi bi-graph-up"></i><span>Analytics</span>
             </a>
             <a class="workspace-link {% if request.endpoint == 'dashboard.profile_page' %}active{% endif %}" href="{{ url_for('dashboard.profile_page') }}">
                 <i class="bi bi-person"></i><span>Profile</span>

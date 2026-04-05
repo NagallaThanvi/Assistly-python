@@ -14,6 +14,9 @@ from routes.dashboard_routes import dashboard_bp
 from routes.communities_routes import communities_bp
 from routes.communities_routes import register_chat_socket_handlers
 from routes.requests_routes import requests_bp
+from routes.ratings_routes import ratings_bp
+from routes.messaging_routes import messaging_bp
+from routes.analytics_routes import analytics_bp
 from models.user_model import get_user_object_by_id
 
 
@@ -53,6 +56,9 @@ def create_app():
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(requests_bp)
     app.register_blueprint(communities_bp)
+    app.register_blueprint(ratings_bp)
+    app.register_blueprint(messaging_bp)
+    app.register_blueprint(analytics_bp)
 
     socketio.init_app(app)
     register_chat_socket_handlers(socketio)

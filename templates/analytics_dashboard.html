@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% block title %}Analytics Dashboard - Assistly{% endblock %}
+{% block content %}
+<div class="page-shell">
+    <div class="container">
+        <div class="mb-4">
+            <h1>Analytics & Insights</h1>
+            <p class="text-secondary">Community activity, volunteer performance, and requests data</p>
+        </div>
+
+        <!-- Key Metrics Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="small text-secondary">Total Requests</div>
+                    <div class="metric">{{ metrics.total_requests }}</div>
+                    <small class="text-muted">All time</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="small text-secondary">Completed</div>
+                    <div class="metric">{{ metrics.completed_requests }}</div>
+                    <small class="text-muted">{{ metrics.completion_rate }}% completion rate</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="small text-secondary">Active Volunteers</div>
+                    <div class="metric">{{ metrics.active_volunteers }}</div>
+                    <small class="text-muted">This month</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="small text-secondary">Avg Time</div>
+                    <div class="metric">{{ metrics.average_completion_time_hours }}h</div>
+                    <small class="text-muted">Request completion</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Period Comparison -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-3">This Month's Activity</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="small text-secondary">New Requests</div>
+                                <div class="metric" style="font-size: 1.8rem;">{{ metrics.requests_this_period }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="small text-secondary">Completions</div>
+                                <div class="metric" style="font-size: 1.8rem;">{{ metrics.completed_this_period }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-3">Community Member</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="small text-secondary">Your Requests</div>
+                                <div class="metric" style="font-size: 1.8rem;">{{ user_insights.resident_requests }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="small text-secondary">Tasks Completed</div>
+                                <div class="metric" style="font-size: 1.8rem;">{{ user_insights.volunteer_completed }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-3">Requests by Category</h5>
+                        {% if category_metrics %}
+                        <div class="category-list">
+                            {% for cat in category_metrics %}
+                            <div class="category-item d-flex align-items-center justify-content-between mb-3">
+                                <div class="flex-grow-1">
+                                    <strong>{{ cat.category }}</strong>
+                                    <div class="progress" style="height: 4px; margin-top: 4px;">
+                                        <div 
+                                            class="progress-bar" 
+                                            role="progressbar" 
+                                            style="width: {% set max_requests = category_metrics|map(attribute='total_requests')|max %}{{ (cat.total_requests / max_requests * 100)|int }}%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end ms-3">
+                                    <strong>{{ cat.total_requests }}</strong>
+                                    <div class="small text-success">{{ cat.completion_rate }}% ✓</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-secondary mb-0">No request data available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volunteer Leaderboard -->
+            <div class="col-lg-6">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-3">Top Volunteers</h5>
+                        {% if leaderboard %}
+                        <div class="leaderboard-list">
+                            {% for item in leaderboard %}
+                            <div class="leaderboard-item d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-primary" style="min-width: 30px; text-align: center;">
+                                        {% if loop.index == 1 %}🥇
+                                        {% elif loop.index == 2 %}🥈
+                                        {% elif loop.index == 3 %}🥉
+                                        {% else %}{{ loop.index }}
+                                        {% endif %}
+                                    </span>
+                                    <div>
+                                        <strong>Volunteer #{{ item.volunteer_id[:8] }}</strong>
+                                        <div class="small text-warning">
+                                            {% for i in range(5) %}
+                                                {% if i < item.average_rating|int %}
+                                                <i class="bi bi-star-fill"></i>
+                                                {% else %}
+                                                <i class="bi bi-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <strong>{{ item.completed_requests }}</strong>
+                                    <div class="small text-secondary">completed</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-secondary mb-0">No volunteer data yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Activity Chart Placeholder -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Request Activity (Last 30 Days)</h5>
+                        <div style="height: 200px; background: linear-gradient(to right, rgba(36, 95, 205, 0.1), transparent); border-radius: 8px; display: flex; align-items: flex-end; gap: 2px; padding: 20px;">
+                            {% for day in daily_activity[-7:] %}
+                            <div style="flex: 1; height: {{ (day.requests / 10 * 100)|max(5) }}%; background: var(--primary); border-radius: 4px 4px 0 0; position: relative;" 
+                                 title="{{ day.date }}: {{ day.requests }} requests">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted d-block mt-2">Last 7 days of activity shown</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Insights -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card section-card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Your Contribution</h5>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="insight-stat">
+                                    <div class="metric">{{ user_insights.resident_avg_rating }}</div>
+                                    <small class="text-secondary">Avg Request Rating</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="insight-stat">
+                                    <div class="metric">{{ user_insights.resident_completed }}</div>
+                                    <small class="text-secondary">Requests Completed</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="insight-stat">
+                                    <div class="metric">{{ user_insights.volunteer_completed }}</div>
+                                    <small class="text-secondary">Tasks Completed</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="insight-stat">
+                                    <div class="metric">{{ "%.1f"|format(user_insights.volunteer_avg_rating) }}</div>
+                                    <small class="text-secondary">Volunteer Rating</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .insight-stat {
+        padding: 20px;
+    }
+
+    .category-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .leaderboard-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+</style>
+{% endblock %}
