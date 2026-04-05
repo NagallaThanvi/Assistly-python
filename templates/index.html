@@ -8,11 +8,12 @@
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6">
                 <div class="hero-content">
-                    <h1 class="hero-title">Community Support Made Simple</h1>
-                    <p class="hero-subtitle">Connect residents, volunteers, and leaders in one trusted platform. Make requests, help others, and build stronger communities.</p>
+                    <h1 class="hero-title">{{ translate('hero.title') }}</h1>
+                    <p class="hero-subtitle">{{ translate('hero.subtitle') }}</p>
                     <div class="d-flex flex-wrap gap-3 mt-4">
-                        <a class="btn btn-primary btn-lg btn-rounded" href="{{ url_for('auth.signup') }}">Join Your Community</a>
-                        <a class="btn btn-outline-primary btn-lg btn-rounded" href="{{ url_for('auth.login') }}">Sign In</a>
+                        <a class="btn btn-primary btn-lg btn-rounded" href="{{ url_for('auth.signup') }}">{{ translate('hero.primary') }}</a>
+                        <a class="btn btn-outline-primary btn-lg btn-rounded" href="{{ url_for('auth.login') }}">{{ translate('hero.secondary') }}</a>
+                        <a class="btn btn-outline-secondary btn-lg btn-rounded" href="{{ url_for('help.help_center') }}">{{ translate('nav.help') }}</a>
                     </div>
                     <p class="helper-text mt-3">No credit card required. Get started in 2 minutes.</p>
                 </div>

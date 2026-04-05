@@ -3,6 +3,15 @@
 ## Overview
 This document outlines recommended features to enhance the Assistly community support platform and make it even more valuable for users.
 
+## Free-First Direction
+
+Assistly should stay free to use for end users and rely on open-source or no-cost services wherever possible.
+
+- Prefer built-in platform features over paid third-party integrations
+- Prefer open-source libraries and free-tier services only
+- Avoid monetization features unless they are optional and not required for core usage
+- Keep authentication, messaging, analytics, and notifications usable without subscription costs
+
 ---
 
 ## 🔐 Authentication & User Management
@@ -75,6 +84,7 @@ This document outlines recommended features to enhance the Assistly community su
    - Weekly community summary
    - Top opportunities for volunteers
    - Leaderboard updates
+   - Use existing SMTP or free email tooling only
    - **Priority:** Medium
 
 ### 11. **Direct Messaging System**
@@ -257,6 +267,7 @@ This document outlines recommended features to enhance the Assistly community su
    - Native mobile experience
    - Push notifications
    - Offline capability
+   - Build only with open-source tooling and no paid SDK requirements
    - **Priority:** High (Future Phase)
 
 ### 38. **Responsive Design Improvements**
@@ -269,7 +280,8 @@ This document outlines recommended features to enhance the Assistly community su
    - Critical alerts via SMS
    - Request offers via SMS
    - Optional for users
-   - **Priority:** Medium
+   - Prefer this only if a free provider or local gateway is available
+   - **Priority:** Low
 
 ---
 
@@ -298,6 +310,7 @@ This document outlines recommended features to enhance the Assistly community su
    - Create targeted email campaigns
    - A/B testing
    - Scheduling support
+   - Use only free or self-hosted email infrastructure
    - **Priority:** Medium
 
 ### 44. **Backup & Data Export**
@@ -319,6 +332,7 @@ This document outlines recommended features to enhance the Assistly community su
 ### 46. **Google Calendar Integration**
    - Sync volunteer availability
    - Community event calendar
+   - Optional only if a free API quota is available
    - **Priority:** Low
 
 ### 47. **Slack/Teams Integration**
@@ -331,7 +345,8 @@ This document outlines recommended features to enhance the Assistly community su
    - Accept donations
    - Option for paid services
    - Commission tracking
-   - **Priority:** Medium
+   - Defer for now to keep the platform free for users
+   - **Priority:** Low
 
 ---
 
@@ -375,7 +390,8 @@ This document outlines recommended features to enhance the Assistly community su
    - Optional background verification
    - Third-party service integration
    - Trust badges for verified volunteers
-   - **Priority:** High
+   - Keep as a later optional integration only if it can be done at no cost
+   - **Priority:** Low
 
 ### 55. **Emergency Contact System**
    - For safety during volunteer tasks
@@ -423,30 +439,30 @@ This document outlines recommended features to enhance the Assistly community su
 
 ## Implementation Roadmap
 
-### Phase 1 (Next 2-3 months) - High Priority
-- Request categories & tags (14)
-- Advanced analytics (5)
-- Email digest notifications (10)
-- Volunteer ratings & reviews (23)
-- Formal completion workflow (34)
-- Direct messaging (11)
-- Mobile responsiveness (38)
-
-### Phase 2 (3-6 months) - Medium Priority
-- Volunteer skill tags (20)
-- Community customization (27)
-- Skill badges & achievements (24)
-- Email campaign manager (43)
-- Slack integration (47)
-- Accessibility improvements (50)
-- Help center & FAQ (59)
-
-### Phase 3 (6-12 months) - Future Features
+### Phase 3 (Next) - Free-First High Priority
 - Mobile app (37)
 - Public API (45)
 - Multi-language support (49)
 - Advanced admin tools (40-42)
+- Help center & FAQ (59)
+- Accessibility improvements (50)
+- Volunteer skill tags (20)
+- Community customization (27)
+
+### Phase 2 (Later) - Medium Priority
+- Skill badges & achievements (24)
+- Email campaign manager (43)
+- Slack integration (47)
+- Request attachments (16)
+- Request priority levels (15)
+- Community events calendar (28)
+- Backup & data export (44)
+
+### Paid/Optional Only If Free
 - Payment integration (48)
+- SMS notifications (39)
+- Background check integration (54)
+- Google Calendar integration (46)
 
 ---
 

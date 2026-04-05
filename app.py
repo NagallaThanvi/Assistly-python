@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta
-from flask import Flask
+from flask import Flask, g, redirect, request, session, url_for
 from dotenv import load_dotenv
 from flask_login import LoginManager
 from authlib.integrations.flask_client import OAuth
@@ -17,7 +17,9 @@ from routes.requests_routes import requests_bp
 from routes.ratings_routes import ratings_bp
 from routes.messaging_routes import messaging_bp
 from routes.analytics_routes import analytics_bp
+from routes.help_routes import help_bp
 from models.user_model import get_user_object_by_id
+from utils.i18n import normalize_language, translate
 
 
 socketio = SocketIO(async_mode="threading", cors_allowed_origins="*")
@@ -52,6 +54,19 @@ def create_app():
     def load_user(user_id: str):
         return get_user_object_by_id(app.db, user_id)
 
+    @app.before_request
+    def load_language_preference():
+        language = normalize_language(request.args.get("lang") or session.get("language", "en"))
+        session["language"] = language
+        g.language = language
+
+    @app.context_processor
+    def inject_i18n_helpers():
+        return {
+            "current_language": getattr(g, "language", "en"),
+            "translate": lambda key: translate(key, getattr(g, "language", "en")),
+        }
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(requests_bp)
@@ -59,6 +74,7 @@ def create_app():
     app.register_blueprint(ratings_bp)
     app.register_blueprint(messaging_bp)
     app.register_blueprint(analytics_bp)
+    app.register_blueprint(help_bp)
 
     socketio.init_app(app)
     register_chat_socket_handlers(socketio)

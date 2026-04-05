@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}{{ translate('help.title') }} - Assistly{% endblock %}
+{% block content %}
+<div class="page-shell help-page">
+    <section class="hero-box mb-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="eyebrow">{{ translate('help.title') }}</span>
+                <h1 class="display-5 mt-2">{{ translate('help.title') }}</h1>
+                <p class="lead text-secondary">{{ translate('help.subtitle') }}</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="d-inline-flex gap-2 flex-wrap justify-content-lg-end">
+                    <a class="btn btn-outline-primary" href="{{ url_for('help.set_language', language='en', next=request.full_path) }}">English</a>
+                    <a class="btn btn-outline-primary" href="{{ url_for('help.set_language', language='es', next=request.full_path) }}">Español</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card section-card mb-4">
+        <div class="card-body">
+            <form method="get" action="{{ url_for('help.help_center') }}" class="row g-3 align-items-end">
+                <div class="col-md-9">
+                    <label class="form-label" for="helpSearch">{{ translate('help.search') }}</label>
+                    <input id="helpSearch" name="q" value="{{ request.args.get('q', '') }}" class="form-control" type="search" placeholder="{{ translate('help.search') }}">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card section-card h-100">
+                <div class="card-body">
+                    <h5>Free by design</h5>
+                    <p class="text-secondary mb-0">Assistly stays usable without paid subscriptions. Core support features, help resources, and accessibility tools are available at no cost.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card section-card h-100">
+                <div class="card-body">
+                    <h5>Accessibility</h5>
+                    <p class="text-secondary mb-0">Use the accessibility button in the header for larger text or higher contrast. Keyboard navigation and skip links are built in.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card section-card h-100">
+                <div class="card-body">
+                    <h5>Language support</h5>
+                    <p class="text-secondary mb-0">Switch between English and Spanish using the Language menu. More translations can be added without paid services.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4">
+        <div class="col-lg-8 mx-auto">
+            {% if faq_items %}
+                {% for item in faq_items %}
+                <details class="help-item card section-card mb-3" open>
+                    <summary class="card-body d-flex justify-content-between align-items-center gap-3">
+                        <div>
+                            <div class="small text-secondary">{{ item.category }}</div>
+                            <h5 class="mb-0">{{ item.question }}</h5>
+                        </div>
+                        <i class="bi bi-chevron-down"></i>
+                    </summary>
+                    <div class="card-body pt-0 text-secondary">
+                        {{ item.answer }}
+                    </div>
+                </details>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">No help articles matched your search.</div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

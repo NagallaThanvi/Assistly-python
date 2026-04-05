@@ -64,6 +64,37 @@ body,
     transition: background 0.25s ease, color 0.25s ease;
 }
 
+.app-body.a11y-large-text {
+    font-size: 1.075rem;
+    line-height: 1.7;
+}
+
+.app-body.a11y-large-text .btn,
+.app-body.a11y-large-text .form-control,
+.app-body.a11y-large-text .nav-link,
+.app-body.a11y-large-text .workspace-link {
+    font-size: 1.02rem;
+}
+
+.app-body.a11y-high-contrast {
+    --border: #101820;
+    --muted: #0f172a;
+    --shadow-soft: 0 0 0 2px rgba(15, 23, 42, 0.08);
+}
+
+.app-body.a11y-high-contrast .card,
+.app-body.a11y-high-contrast .section-card,
+.app-body.a11y-high-contrast .stats-card,
+.app-body.a11y-high-contrast .hero-box,
+.app-body.a11y-high-contrast .workspace-shell {
+    border-width: 2px;
+}
+
+.app-body.a11y-high-contrast a {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
 .app-body {
     position: relative;
     overflow-x: clip;

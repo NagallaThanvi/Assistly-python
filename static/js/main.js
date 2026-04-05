@@ -2,10 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const root = document.documentElement;
     const body = document.body;
     const themeToggle = document.getElementById("themeToggle");
+    const a11yToggle = document.getElementById("a11yToggle");
     const topbar = document.querySelector(".app-topbar");
     const storedTheme = localStorage.getItem("assistly-theme");
+    const storedA11y = localStorage.getItem("assistly-accessibility");
     const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+    const initialA11y = storedA11y || "default";
 
     function applyTheme(theme) {
         root.setAttribute("data-theme", theme);
@@ -23,6 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     applyTheme(initialTheme);
+
+    function applyAccessibility(mode) {
+        body.classList.remove("a11y-default", "a11y-large-text", "a11y-high-contrast");
+        body.classList.add(`a11y-${mode}`);
+        if (a11yToggle) {
+            const label = a11yToggle.querySelector("span");
+            if (label) {
+                const text = mode === "large-text" ? "Large Text" : mode === "high-contrast" ? "High Contrast" : "Accessibility";
+                label.textContent = text;
+            }
+        }
+        window.dispatchEvent(new CustomEvent("assistly:accessibility-changed", { detail: { mode } }));
+    }
+
+    applyAccessibility(initialA11y);
 
     function syncTopbarState() {
         if (!topbar) return;
@@ -156,6 +174,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
             localStorage.setItem("assistly-theme", nextTheme);
             applyTheme(nextTheme);
+        });
+    }
+
+    if (a11yToggle) {
+        a11yToggle.addEventListener("click", () => {
+            const current = localStorage.getItem("assistly-accessibility") || "default";
+            const next = current === "default" ? "large-text" : current === "large-text" ? "high-contrast" : "default";
+            localStorage.setItem("assistly-accessibility", next);
+            applyAccessibility(next);
         });
     }
 

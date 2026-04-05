@@ -58,6 +58,9 @@
             <a class="workspace-link {% if request.endpoint == 'analytics.analytics_dashboard' %}active{% endif %}" href="{{ url_for('analytics.analytics_dashboard') }}">
                 <i class="bi bi-graph-up"></i><span>Analytics</span>
             </a>
+            <a class="workspace-link {% if request.endpoint == 'help.help_center' %}active{% endif %}" href="{{ url_for('help.help_center') }}">
+                <i class="bi bi-question-circle"></i><span>{{ translate('nav.help') }}</span>
+            </a>
             <a class="workspace-link {% if request.endpoint == 'dashboard.profile_page' %}active{% endif %}" href="{{ url_for('dashboard.profile_page') }}">
                 <i class="bi bi-person"></i><span>Profile</span>
             </a>
@@ -84,6 +87,10 @@
                 <button id="themeToggle" class="btn btn-sm btn-outline-light" type="button" aria-label="Toggle dark and light theme">
                     <i class="bi bi-moon-stars-fill"></i>
                     <span class="ms-1">Theme</span>
+                </button>
+                <button id="a11yToggle" class="btn btn-sm btn-outline-light" type="button" aria-label="Toggle accessibility mode">
+                    <i class="bi bi-universal-access-circle"></i>
+                    <span class="ms-1">{{ translate('nav.accessibility') }}</span>
                 </button>
                 <a class="workspace-pill" href="{{ url_for('dashboard.profile_page') }}">
                     <i class="bi bi-person-gear"></i>
@@ -160,6 +167,7 @@
                 <li class="nav-item"><a class="nav-link app-nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}" href="{{ url_for('dashboard.index') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link app-nav-link" href="{{ url_for('dashboard.index') }}#about">Platform</a></li>
                 <li class="nav-item"><a class="nav-link app-nav-link" href="{{ url_for('dashboard.index') }}#services">Capabilities</a></li>
+                <li class="nav-item"><a class="nav-link app-nav-link {% if request.endpoint == 'help.help_center' %}active{% endif %}" href="{{ url_for('help.help_center') }}">{{ translate('nav.help') }}</a></li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link app-nav-link {% if request.endpoint and request.endpoint.startswith('dashboard.') and request.endpoint != 'dashboard.index' %}active{% endif %}" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link app-nav-link {% if request.endpoint and request.endpoint.startswith('communities.') %}active{% endif %}" href="{{ url_for('communities.communities_page') }}">Communities</a></li>
@@ -167,10 +175,26 @@
                 {% endif %}
             </ul>
             <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item dropdown">
+                    <a class="btn btn-sm btn-outline-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-translate"></i>
+                        <span class="ms-1">{{ translate('nav.language') }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('help.set_language', language='en', next=request.full_path) }}">English</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('help.set_language', language='es', next=request.full_path) }}">Español</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <button id="themeToggle" class="btn btn-sm btn-outline-light" type="button" aria-label="Toggle dark and light theme">
                         <i class="bi bi-moon-stars-fill"></i>
                         <span class="ms-1">Theme</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button id="a11yToggle" class="btn btn-sm btn-outline-light" type="button" aria-label="Toggle accessibility mode">
+                        <i class="bi bi-universal-access-circle"></i>
+                        <span class="ms-1">{{ translate('nav.accessibility') }}</span>
                     </button>
                 </li>
                 {% if current_user.is_authenticated %}
