@@ -1,42 +1,42 @@
 :root,
 html[data-theme="light"] {
-    --bg: #f4f7fb;
-    --bg-accent: #e8edf5;
+    --bg: #f8fafc;
+    --bg-accent: #f1f5f9;
     --surface: #ffffff;
-    --surface-soft: #f8fafd;
-    --surface-raised: #fcfdff;
-    --text: #14233b;
-    --muted: #637695;
-    --border: #d9e2f0;
-    --primary: #245fcd;
-    --primary-soft: #e9f1ff;
-    --neutral-ink: #23324a;
-    --success: #168a56;
-    --warning: #ad6d08;
-    --danger: #c84454;
-    --shadow: 0 10px 32px rgba(19, 35, 64, 0.1);
-    --shadow-soft: 0 4px 16px rgba(16, 28, 48, 0.06);
-    --ring: rgba(36, 95, 205, 0.22);
+    --surface-soft: #f8fafc;
+    --surface-raised: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #2563eb;
+    --primary-soft: #eff6ff;
+    --neutral-ink: #1e293b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.04);
+    --ring: rgba(37, 99, 235, 0.22);
 }
 
 html[data-theme="dark"] {
-    --bg: #0f1211;
-    --bg-accent: #171c19;
-    --surface: #1a201d;
-    --surface-soft: #222a25;
-    --surface-raised: #27312b;
-    --text: #ecf2ee;
-    --muted: #a6b3aa;
-    --border: #344238;
-    --primary: #3ea883;
-    --primary-soft: #21473a;
-    --neutral-ink: #dbe8df;
-    --success: #56c28f;
-    --warning: #d8aa55;
-    --danger: #e8848f;
-    --shadow: 0 22px 44px rgba(3, 5, 4, 0.62);
-    --shadow-soft: 0 10px 26px rgba(3, 5, 4, 0.44);
-    --ring: rgba(62, 168, 131, 0.35);
+    --bg: #0b0f19;
+    --bg-accent: #111827;
+    --surface: #1e293b;
+    --surface-soft: #1e293b;
+    --surface-raised: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #334155;
+    --primary: #3b82f6;
+    --primary-soft: #1e3a8a;
+    --neutral-ink: #e2e8f0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --shadow: 0 22px 44px rgba(0, 0, 0, 0.5);
+    --shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.3);
+    --ring: rgba(59, 130, 246, 0.35);
 }
 
 * {
@@ -172,6 +172,9 @@ h6,
 .navbar-brand {
     font-family: "Sora", sans-serif;
     color: var(--text);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
 }
 
 .text-secondary,
@@ -200,9 +203,10 @@ h6,
 
 .app-topbar {
     border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 82%, transparent 18%);
-    box-shadow: 0 8px 24px rgba(13, 24, 44, 0.12);
-    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--surface) 75%, transparent 25%);
+    box-shadow: 0 8px 24px rgba(13, 24, 44, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -228,7 +232,7 @@ html[data-theme="dark"] .app-topbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, #44b8ff 30%));
+    background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #3b82f6 40%));
     color: #fff;
 }
 
@@ -298,7 +302,9 @@ html[data-theme="light"] .navbar-toggler-icon {
 
 .workspace-sidebar {
     border-right: 1px solid color-mix(in srgb, var(--border) 88%, transparent 12%);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 90%, #fff 10%), color-mix(in srgb, var(--surface) 95%, #fff 5%));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 80%, transparent 20%), color-mix(in srgb, var(--surface) 85%, transparent 15%));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 1.4rem 1rem 1rem;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -773,23 +779,23 @@ html[data-theme="dark"] .table-responsive {
 }
 
 html[data-theme="dark"] .kpi-card.stat-blue {
-    border-color: color-mix(in srgb, #3ea883 62%, #264136 38%);
-    background: linear-gradient(140deg, #2c7d61, #245e4b);
+    border-color: color-mix(in srgb, #3b82f6 62%, #1e3a8a 38%);
+    background: linear-gradient(140deg, #2563eb, #1e40af);
 }
 
 html[data-theme="dark"] .kpi-card.stat-green {
-    border-color: color-mix(in srgb, #56c28f 62%, #325548 38%);
-    background: linear-gradient(140deg, #348f6a, #2d6f54);
+    border-color: color-mix(in srgb, #10b981 62%, #064e3b 38%);
+    background: linear-gradient(140deg, #059669, #047857);
 }
 
 html[data-theme="dark"] .kpi-card.stat-orange {
-    border-color: color-mix(in srgb, #d8aa55 62%, #4f4230 38%);
-    background: linear-gradient(140deg, #9a753d, #7b5e34);
+    border-color: color-mix(in srgb, #f59e0b 62%, #78350f 38%);
+    background: linear-gradient(140deg, #d97706, #b45309);
 }
 
 html[data-theme="dark"] .kpi-card.stat-indigo {
-    border-color: color-mix(in srgb, #7ab39d 62%, #335247 38%);
-    background: linear-gradient(140deg, #3c6f5c, #325a4c);
+    border-color: color-mix(in srgb, #8b5cf6 62%, #4c1d95 38%);
+    background: linear-gradient(140deg, #7c3aed, #6d28d9);
 }
 
 .kpi-card.stat-blue .kpi-label,
@@ -2197,4 +2203,13 @@ html[data-theme="dark"] .btn-primary {
     .features-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.btn {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    will-change: transform;
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
