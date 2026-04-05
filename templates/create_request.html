@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}Assistly | Create Request{% endblock %}
+{% block title %}Assistly | {{ translate('request.title') }}{% endblock %}
 {% block content %}
 <div class="page-shell">
     <section class="hero-panel">
-        <h2 class="mb-1">Create Help Request</h2>
-        <p class="text-secondary mb-0">Provide clear details so nearby volunteers can respond quickly and effectively.</p>
+        <h2 class="mb-1">{{ translate('request.title') }}</h2>
+        <p class="text-secondary mb-0">{{ translate('request.subtitle') }}</p>
     </section>
     <div class="row justify-content-center">
     <div class="col-xl-10">
@@ -12,28 +12,28 @@
             <div class="card-body">
                 <form method="post" action="{{ url_for('requests.create_request_route') }}">
                     <div class="mb-3">
-                        <label class="form-label">Community *</label>
+                        <label class="form-label">{{ translate('request.community') }} *</label>
                         <select name="community_id" class="form-select" required>
                             <option value="">Select a community</option>
                             {% for community in communities %}
                             <option value="{{ community._id }}">{{ community.name }} ({{ community.location }})</option>
                             {% endfor %}
                         </select>
-                        <small class="text-secondary">You can only create requests in communities you've joined.</small>
+                        <small class="text-secondary">{{ translate('request.community_note') }}</small>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Title *</label>
+                        <label class="form-label">{{ translate('request.title_label') }} *</label>
                         <input type="text" name="title" class="form-control" placeholder="Brief title of your request" required>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Description *</label>
+                        <label class="form-label">{{ translate('request.description') }} *</label>
                         <textarea name="description" class="form-control" rows="4" placeholder="Provide details about what you need help with" required></textarea>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Category *</label>
+                        <label class="form-label">{{ translate('request.category') }} *</label>
                         <select name="category" class="form-select" required>
                             <option value="">Select a category</option>
                             {% for category in categories %}
@@ -43,7 +43,7 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Location Description</label>
+                        <label class="form-label">{{ translate('request.location_description') }}</label>
                         <input type="text" name="location_text" class="form-control" placeholder="e.g., Near Main Street Market">
                     </div>
                     
@@ -59,8 +59,8 @@
                     </div>
                     
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-success">Submit Request</button>
-                        <a href="{{ url_for('dashboard.user_dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">{{ translate('request.submit') }}</button>
+                        <a href="{{ url_for('dashboard.user_dashboard') }}" class="btn btn-outline-secondary">{{ translate('request.cancel') }}</a>
                     </div>
                 </form>
             </div>

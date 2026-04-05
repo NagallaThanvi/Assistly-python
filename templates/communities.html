@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Assistly | Communities{% endblock %}
+{% block title %}Assistly | {{ translate('communities.title') }}{% endblock %}
 {% block content %}
 <section class="hero-panel mb-4">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
-            <h2 class="mb-1">Community Access Center</h2>
-            <p class="text-secondary mb-0">Scoped access, admin approvals, invitations, and member-only communication.</p>
+            <h2 class="mb-1">{{ translate('communities.title') }}</h2>
+            <p class="text-secondary mb-0">{{ translate('communities.subtitle') }}</p>
         </div>
         <form method="get" class="d-flex gap-2">
-            <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Search communities">
+            <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{{ translate('communities.search') }}">
             <button class="btn btn-outline-secondary" type="submit">Search</button>
         </form>
     </div>
@@ -17,7 +17,7 @@
 {% if my_invites %}
 <section class="card section-card mb-4">
     <div class="card-body">
-        <h5 class="mb-2">My Pending Invitations</h5>
+        <h5 class="mb-2">{{ translate('communities.pending_invites') }}</h5>
         <div class="compact-list">
             {% for invite in my_invites %}
             <div class="compact-list-item">
@@ -46,12 +46,12 @@
 <section class="card section-card mb-4">
     <div class="card-body">
         <div class="panel-head mb-2">
-            <h5 class="mb-0">Join Another Community</h5>
-            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('communities.personal_chat') }}">Open Personal Chat</a>
+            <h5 class="mb-0">{{ translate('communities.join') }}</h5>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('communities.personal_chat') }}">{{ translate('communities.personal_chat') }}</a>
         </div>
         <form method="post" action="{{ url_for('communities.join_by_name') }}" class="row g-2">
             <div class="col-md-9">
-                <input class="form-control" name="community_name" list="community-name-suggestions" placeholder="Enter a community to join" required>
+                <input class="form-control" name="community_name" list="community-name-suggestions" placeholder="{{ translate('communities.join') }}" required>
                 <datalist id="community-name-suggestions">
                     {% for name in all_community_names %}
                     <option value="{{ name }}"></option>
@@ -59,7 +59,7 @@
                 </datalist>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-primary w-100" type="submit">Send Request</button>
+                <button class="btn btn-primary w-100" type="submit">{{ translate('communities.send_request') }}</button>
             </div>
         </form>
         <div class="small text-secondary mt-2">This sends a join request to that community admin.</div>
@@ -74,12 +74,12 @@
 {% if is_maintainer %}
 <section class="card section-card mb-4">
     <div class="card-body">
-        <h5 class="mb-2">Maintainer Community Provisioning</h5>
+        <h5 class="mb-2">{{ translate('communities.provisioning') }}</h5>
         <form class="row g-2" method="post" action="{{ url_for('communities.create') }}">
             <div class="col-md-4"><input class="form-control" name="name" placeholder="Community name" required></div>
             <div class="col-md-4"><input class="form-control" name="location" placeholder="Location" required></div>
             <div class="col-md-3"><input class="form-control" name="admin_email" placeholder="Admin email" required></div>
-            <div class="col-md-1"><button class="btn btn-primary w-100" type="submit">Add</button></div>
+            <div class="col-md-1"><button class="btn btn-primary w-100" type="submit">{{ translate('communities.add') }}</button></div>
         </form>
         <div class="small text-secondary mt-2">Each community must have exactly one assigned admin.</div>
     </div>
@@ -97,19 +97,19 @@
         <div class="small text-secondary mb-2">Community Admin: <strong>{{ c.admin_name }}</strong></div>
 
         {% if c.is_member %}
-        <button class="btn btn-sm btn-outline-success" type="button" disabled>Already a Member</button>
+        <button class="btn btn-sm btn-outline-success" type="button" disabled>{{ translate('communities.already_member') }}</button>
         <a class="btn btn-sm btn-outline-primary" href="{{ url_for('communities.personal_chat') }}">Personal Chat</a>
         {% elif c.is_pending %}
-        <button class="btn btn-sm btn-outline-warning" type="button" disabled>Request Pending</button>
+        <button class="btn btn-sm btn-outline-warning" type="button" disabled>{{ translate('communities.request_pending') }}</button>
         {% elif is_maintainer %}
         <form method="post" action="{{ url_for('communities.join', community_id=c._id) }}">
-            <button class="btn btn-sm btn-success" type="submit">Send Join Request</button>
+            <button class="btn btn-sm btn-success" type="submit">{{ translate('communities.send_join_request') }}</button>
         </form>
         {% endif %}
 
         {% if c.can_manage %}
         <div class="mt-3 pt-3 border-top">
-            <p class="small fw-semibold mb-2">Pending Join Requests ({{ c.pending_users|length }})</p>
+            <p class="small fw-semibold mb-2">{{ translate('communities.pending_join_requests') }} ({{ c.pending_users|length }})</p>
             {% for pending in c.pending_users %}
             <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
                 <span class="small">{{ pending.name }}</span>
@@ -128,10 +128,10 @@
         </div>
 
         <div class="mt-3 pt-3 border-top">
-            <p class="small fw-semibold mb-2">Invite User by Email</p>
+            <p class="small fw-semibold mb-2">{{ translate('communities.invite_user') }}</p>
             <form method="post" action="{{ url_for('communities.invite_user', community_id=c._id) }}" class="d-flex gap-2">
                 <input class="form-control form-control-sm" type="email" name="email" placeholder="user email" required>
-                <button class="btn btn-sm btn-outline-primary" type="submit">Invite</button>
+                <button class="btn btn-sm btn-outline-primary" type="submit">{{ translate('communities.invite') }}</button>
             </form>
             {% if c.pending_invites %}
             <div class="small text-secondary mt-2">Pending Invites: {{ c.pending_invites|length }}</div>
@@ -141,14 +141,14 @@
         {% if is_maintainer %}
         <div class="mt-3">
             <form method="post" action="{{ url_for('communities.delete', community_id=c._id) }}">
-                <button class="btn btn-sm btn-outline-danger" type="submit">Delete Community</button>
+                <button class="btn btn-sm btn-outline-danger" type="submit">{{ translate('communities.delete') }}</button>
             </form>
         </div>
         {% endif %}
         {% endif %}
     </article>
 {% else %}
-    <div class="empty-state">No communities found in your current access scope.</div>
+    <div class="empty-state">{{ translate('communities.no_communities') }}</div>
 {% endfor %}
 </div>
 {% endblock %}

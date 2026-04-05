@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Assistly | Dashboard{% endblock %}
+{% block title %}Assistly | {{ translate('dashboard.title') }}{% endblock %}
 {% block head_extra %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 {% endblock %}
@@ -9,50 +9,50 @@
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
             <div>
                 <div class="dashboard-topline">
-                    <span class="eyebrow">Resident Workspace</span>
-                    <span class="live-indicator"><span class="live-dot"></span>Live</span>
+                    <span class="eyebrow">{{ translate('dashboard.resident_workspace') }}</span>
+                    <span class="live-indicator"><span class="live-dot"></span>{{ translate('dashboard.live') }}</span>
                 </div>
-                <div class="small text-secondary mb-1">Today</div>
-                <div class="small text-secondary mb-1">{{ current_user.name }}, welcome back</div>
-                <h2 class="mb-1">Community Operations Hub</h2>
-                <p class="text-secondary mb-1">Manage requests, coordinate volunteers, and stay updated in one place.</p>
+                <div class="small text-secondary mb-1">{{ translate('dashboard.today') }}</div>
+                <div class="small text-secondary mb-1">{{ current_user.name }}, {{ translate('dashboard.welcome_back') }}</div>
+                <h2 class="mb-1">{{ translate('dashboard.title') }}</h2>
+                <p class="text-secondary mb-1">{{ translate('dashboard.manage_requests') }}</p>
                 <div id="notificationBadge" class="small text-secondary status-glow">Checking notifications...</div>
             </div>
             <div class="mode-switch-wrap">
-                <label class="form-label mb-1">Working Mode</label>
+                <label class="form-label mb-1">{{ translate('dashboard.working_mode') }}</label>
                 <select id="modeSelector" class="form-select" data-current-mode="{{ mode }}">
-                    <option value="resident" {% if mode == 'resident' %}selected{% endif %}>Resident Mode</option>
-                    <option value="volunteer" {% if mode == 'volunteer' %}selected{% endif %}>Volunteer Mode</option>
+                    <option value="resident" {% if mode == 'resident' %}selected{% endif %}>{{ translate('dashboard.resident_mode') }}</option>
+                    <option value="volunteer" {% if mode == 'volunteer' %}selected{% endif %}>{{ translate('dashboard.volunteer_mode') }}</option>
                 </select>
                 {% if mode == 'resident' %}
-                <a href="{{ url_for('requests.create_request_page') }}" class="btn btn-dark-pill mt-2">+ Create New Request</a>
+                <a href="{{ url_for('requests.create_request_page') }}" class="btn btn-dark-pill mt-2">{{ translate('dashboard.create_new_request') }}</a>
                 {% endif %}
             </div>
         </div>
         <div class="kpi-grid mt-3">
-            <div class="kpi-card stat-blue"><div class="kpi-label">My Requests</div><div class="kpi-value">{{ my_requests|length }}</div></div>
-            <div class="kpi-card stat-green"><div class="kpi-label">Open</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','Open')|list|length }}</div></div>
-            <div class="kpi-card stat-orange"><div class="kpi-label">In Progress</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','In Progress')|list|length }}</div></div>
-            <div class="kpi-card stat-indigo"><div class="kpi-label">Completed</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','Completed')|list|length }}</div></div>
+            <div class="kpi-card stat-blue"><div class="kpi-label">{{ translate('dashboard.my_requests') }}</div><div class="kpi-value">{{ my_requests|length }}</div></div>
+            <div class="kpi-card stat-green"><div class="kpi-label">{{ translate('dashboard.open') }}</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','Open')|list|length }}</div></div>
+            <div class="kpi-card stat-orange"><div class="kpi-label">{{ translate('dashboard.in_progress') }}</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','In Progress')|list|length }}</div></div>
+            <div class="kpi-card stat-indigo"><div class="kpi-label">{{ translate('dashboard.completed') }}</div><div class="kpi-value">{{ my_requests|selectattr('status','equalto','Completed')|list|length }}</div></div>
         </div>
         <div class="dashboard-actions mt-3">
             {% if mode == 'resident' %}
             <a class="quick-action" href="{{ url_for('requests.create_request_page') }}">
-                <strong>Create Request</strong>
+                <strong>{{ translate('dashboard.create_request') }}</strong>
                 <small>Post a new support need with location details.</small>
             </a>
             {% else %}
             <a class="quick-action" href="#volunteerSection">
-                <strong>Volunteer Queue</strong>
+                <strong>{{ translate('dashboard.volunteer_queue') }}</strong>
                 <small>Review open requests and complete accepted tasks.</small>
             </a>
             {% endif %}
             <a class="quick-action" href="{{ url_for('communities.communities_page') }}">
-                <strong>Explore Communities</strong>
+                <strong>{{ translate('dashboard.explore_communities') }}</strong>
                 <small>Join local groups to unlock relevant requests.</small>
             </a>
             <a class="quick-action" href="{{ url_for('dashboard.leaderboard_page') }}">
-                <strong>Leaderboard & Milestones</strong>
+                <strong>{{ translate('dashboard.leaderboard') }}</strong>
                 <small>Track contribution ranking, progress, and rewards.</small>
             </a>
         </div>
@@ -64,14 +64,14 @@
                 <div class="card-body">
                     <div class="panel-head">
                         <div>
-                            <h5 class="mb-0">Live Operations Map</h5>
-                            <div class="small text-secondary">Dispatch-style visibility for requests, activity status, and coverage.</div>
+                            <h5 class="mb-0">{{ translate('dashboard.live_map') }}</h5>
+                            <div class="small text-secondary">{{ translate('dashboard.map_summary') }}</div>
                         </div>
                         <div class="map-toolbar">
-                            <button class="btn btn-sm btn-outline-secondary" id="detectLocationBtn" type="button">Detect Location</button>
-                            <button class="btn btn-sm btn-outline-primary" id="focusMineBtn" type="button">My Requests</button>
-                            <button class="btn btn-sm btn-outline-primary" id="focusOpenBtn" type="button">Open Requests</button>
-                            <button class="btn btn-sm btn-outline-secondary" id="fitAllBtn" type="button">Fit All</button>
+                            <button class="btn btn-sm btn-outline-secondary" id="detectLocationBtn" type="button">{{ translate('dashboard.detect_location') }}</button>
+                            <button class="btn btn-sm btn-outline-primary" id="focusMineBtn" type="button">{{ translate('dashboard.my_requests_map') }}</button>
+                            <button class="btn btn-sm btn-outline-primary" id="focusOpenBtn" type="button">{{ translate('dashboard.open_requests') }}</button>
+                            <button class="btn btn-sm btn-outline-secondary" id="fitAllBtn" type="button">{{ translate('dashboard.fit_all') }}</button>
                         </div>
                     </div>
                     <div id="map" class="map-frame mt-3"></div>
@@ -89,8 +89,8 @@
             <div class="card h-100 section-card">
                 <div class="card-body">
                     <div class="panel-head mb-2">
-                        <h5 class="mb-0">My Communities</h5>
-                        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('communities.communities_page') }}">Browse</a>
+                        <h5 class="mb-0">{{ translate('dashboard.my_communities') }}</h5>
+                        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('communities.communities_page') }}">{{ translate('dashboard.browse') }}</a>
                     </div>
                     <div class="compact-list">
                         {% for c in communities[:6] %}
@@ -111,10 +111,10 @@
         <div class="card section-card mb-3">
             <div class="card-body panel-head">
                 <div>
-                    <h5 class="mb-1">Resident Queue</h5>
+                    <h5 class="mb-1">{{ translate('dashboard.resident_queue') }}</h5>
                     <p class="small text-secondary mb-0">Create requests and keep statuses up to date.</p>
                 </div>
-                <a href="{{ url_for('requests.create_request_page') }}" class="btn btn-primary">Create Request</a>
+                <a href="{{ url_for('requests.create_request_page') }}" class="btn btn-primary">{{ translate('dashboard.create_request') }}</a>
             </div>
         </div>
         <div class="ops-list">
@@ -142,7 +142,7 @@
                 </div>
             </article>
             {% else %}
-            <div class="empty-state">No requests yet. Create your first request to get support quickly.</div>
+            <div class="empty-state">{{ translate('dashboard.no_requests') }}</div>
             {% endfor %}
         </div>
     </section>
@@ -150,7 +150,7 @@
     <section id="volunteerSection" {% if mode != 'volunteer' %}style="display:none;"{% endif %}>
         <div class="card section-card mb-3">
             <div class="card-body">
-                <h5 class="mb-1">Volunteer Feed</h5>
+                <h5 class="mb-1">{{ translate('dashboard.volunteer_feed') }}</h5>
                 <p class="small text-secondary mb-0">Available requests from communities where you are a member.</p>
             </div>
         </div>
@@ -176,7 +176,7 @@
                 </div>
             </article>
             {% else %}
-            <div class="empty-state">No volunteer requests available right now. Join more communities to increase visibility.</div>
+            <div class="empty-state">{{ translate('dashboard.no_volunteer_requests') }}</div>
             {% endfor %}
         </div>
     </section>
