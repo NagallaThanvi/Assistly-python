@@ -84,6 +84,9 @@ def create_app():
     return app
 
 
+# Expose a WSGI app for Gunicorn commands that use `app:app`.
+app = create_app()
+
+
 if __name__ == "__main__":
-    flask_app = create_app()
-    socketio.run(flask_app, debug=True)
+    socketio.run(app, debug=True)
