@@ -156,15 +156,44 @@ The application now uses these collections:
 
 ## Deployment
 
+### Best Free Deployment Option: Render
+
+Render is the best free-first platform for this app because it supports Python web services, connects easily to GitHub, and works well with MongoDB Atlas.
+
+#### Steps
+
+1. Push the latest code to GitHub.
+2. Create a free MongoDB Atlas cluster if you have not already.
+3. In Render, create a new **Web Service** from your GitHub repository.
+4. Use these settings:
+  - **Environment:** Python
+  - **Build Command:** `pip install -r requirements.txt`
+  - **Start Command:** `gunicorn wsgi:app`
+5. Add these environment variables in Render:
+  - `SECRET_KEY`
+  - `MONGO_URI`
+  - `DB_NAME`
+  - `SMTP_HOST`
+  - `SMTP_PORT`
+  - `SMTP_USER`
+  - `SMTP_PASSWORD`
+  - `SMTP_USE_TLS`
+  - `EMAIL_FROM`
+  - `GOOGLE_CLIENT_ID`
+  - `GOOGLE_CLIENT_SECRET`
+  - `GOOGLE_REDIRECT_URI`
+6. Deploy the service.
+7. After the first successful deploy, run `bootstrap_collections.py` once if needed to ensure collections and indexes exist.
+
 ### Local Development
 
 - Use `.venv/bin/python app.py`
 
-### Production
+### Production Notes
 
-- Build command: `pip install -r requirements.txt`
-- Start command: `gunicorn app:create_app()`
-- Required environment variables: `SECRET_KEY`, `MONGO_URI`, `DB_NAME`
+- The app now uses `wsgi.py` as the production entrypoint.
+- MongoDB Atlas is the recommended free database backend.
+- Render's free tier may sleep when idle, so first-load latency can happen.
 
 ## Notes
 
