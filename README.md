@@ -1,148 +1,180 @@
-# Assistly - Role-Based Community Service Platform
+# Assistly
 
-Assistly is a Flask + MongoDB platform where users can switch between Resident and Volunteer modes, while Admin users manage users, requests, and communities.
+Assistly is a Flask and MongoDB community support platform for residents, volunteers, and administrators. It provides request management, community coordination, direct messaging, volunteer ratings, and analytics in a professional role-based workspace.
 
-## Core Upgrades
+## What Assistly Does
 
-- Flask-Login authentication (Signup/Login/Logout)
-- Role-aware routing:
-  - `admin` -> Admin Dashboard
-  - `user` -> User Dashboard
-- User mode toggle inside user dashboard:
-  - Resident Mode
-  - Volunteer Mode
-- Leaflet map integration:
-  - click to select location
-  - detect current location
-  - save coordinates to DB
-- Resident requests system:
-  - create/view/update/delete
-  - status tracking (`Open`, `In Progress`, `Completed`)
-- Volunteer workflow:
-  - view all requests except own
-  - accept request
-  - mark accepted request completed
-  - self-accept blocked at backend
-- Communities module:
-  - list/search communities
-  - join community
-  - admin create/delete communities
-- Admin dashboard:
-  - view users
-  - view/delete requests
-  - manage communities
-  - analytics charts
-- Bonus:
-  - modal request form
-  - polling notifications without refresh
+- Resident and volunteer modes with role-aware navigation
+- Community join and approval workflows
+- Request creation, assignment, progress tracking, and completion
+- Volunteer ratings and feedback after completion
+- Direct messaging between users
+- Analytics dashboards for platform, community, and user insights
+- Email notifications and weekly digest support
+- MongoDB bootstrap script for collections and indexes
+
+## Phase 1 Included
+
+The current codebase includes the first major feature phase:
+
+- Request tags for better categorization and filtering
+- Volunteer rating and review flow
+- Completion confirmation workflow for residents
+- Direct messaging inbox and conversation screens
+- Analytics dashboard with request, volunteer, and activity metrics
+- Email notification service for welcome, completion, and digest emails
+- Bootstrap script that creates the required MongoDB collections and indexes
 
 ## Tech Stack
 
-- Framework: Django
-- Database: MongoDB
-- Graph-related Database: SurrealDB
-- API: GraphQL
-- AI/ML/NLP: Python Libraries (such as scikit-learn, TensorFlow/PyTorch, spaCy, NLTK, Transformers)
-- Frontend: Jinja2/HTML, Bootstrap 5, JavaScript, Leaflet.js
-- Deployment: Gunicorn + Render
+- Backend: Flask, Flask-Login, Flask-SocketIO, Authlib
+- Database: MongoDB with PyMongo
+- Frontend: Jinja2 templates, Bootstrap 5, custom CSS, JavaScript
+- Runtime: Gunicorn for deployment
 
-## Updated Structure
+## Project Structure
 
 ```text
-assistly/
+Assistly-python/
   app.py
   config.py
+  bootstrap_collections.py
   requirements.txt
   routes/
-    auth_routes.py
-    dashboard_routes.py
-    requests_routes.py
-    communities_routes.py
   models/
-    user_model.py
-    request_model.py
-    community_model.py
   templates/
-    base.html
-    index.html
-    login.html
-    signup.html
-    dashboard.html
-    admin_dashboard.html
-    communities.html
   static/
-    css/style.css
-    js/main.js
   analytics/
-    analytics.py
 ```
 
-## Run Locally
+## Setup
 
-1. Open project folder.
+1. Create and activate a virtual environment.
 
-```powershell
-cd C:\Users\nagal\OneDrive\Desktop\PFSD\assistly
+```bash
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-2. Create and activate venv (Python 3.12 recommended).
+2. Install dependencies.
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-3. Install dependencies.
-
-```powershell
+```bash
 pip install -r requirements.txt
 ```
 
-4. Create/update `.env`.
+3. Configure environment variables in `.env`.
 
 ```env
-SECRET_KEY=replace-with-a-secure-random-string
+SECRET_KEY=your-secret-key
 MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
 DB_NAME=assistly_db
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@example.com
+SMTP_PASSWORD=your-app-password
+SMTP_USE_TLS=true
+EMAIL_FROM=your-email@example.com
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=http://127.0.0.1:5000/auth/google/callback
 ```
 
-5. Start the app.
+4. Bootstrap collections and indexes.
 
-```powershell
-python app.py
+```bash
+.venv/bin/python bootstrap_collections.py
 ```
 
-6. Open:
+5. Start the application.
 
-`http://127.0.0.1:5000`
+```bash
+.venv/bin/python app.py
+```
 
-## Default Role Behavior
+6. Open the app.
 
-- New users are created with role `user`.
-- To create an admin via signup, use admin code: `ASSISTLY_ADMIN`.
-- Admin accounts always use Admin Dashboard.
+```text
+http://127.0.0.1:5000
+```
 
-## Key Endpoints
+## Useful Routes
 
-- Auth: `/signup`, `/login`, `/logout`
-- Dashboard: `/dashboard`, `/dashboard/user`, `/dashboard/admin`
-- Mode toggle API: `POST /dashboard/mode`
-- Location save API: `POST /dashboard/location`
-- Request CRUD + actions:
-  - `POST /requests/create`
-  - `POST /requests/<id>/update`
-  - `POST /requests/<id>/status`
-  - `POST /requests/<id>/delete`
-  - `POST /requests/<id>/accept`
-  - `POST /requests/<id>/complete`
-- Communities:
-  - `GET /communities/`
-  - `POST /communities/<id>/join`
-  - `POST /communities/create` (admin)
-  - `POST /communities/<id>/delete` (admin)
+### Authentication
 
-## Deployment (Render)
+- `/signup`
+- `/login`
+- `/logout`
+
+### Dashboard
+
+- `/dashboard`
+- `/dashboard/user`
+- `/dashboard/admin`
+
+### Requests
+
+- `GET /requests/create`
+- `POST /requests/create`
+- `POST /requests/<id>/update`
+- `POST /requests/<id>/status`
+- `POST /requests/<id>/delete`
+- `POST /requests/<id>/accept`
+- `POST /requests/<id>/complete`
+
+### Communities
+
+- `/communities/`
+- `POST /communities/<id>/join`
+- `POST /communities/create`
+- `POST /communities/<id>/delete`
+
+### Phase 1 Features
+
+- `/ratings/request/<request_id>/rate`
+- `/ratings/request/<request_id>/confirm-complete`
+- `/ratings/volunteer/<volunteer_id>`
+- `/messaging/`
+- `/messaging/conversation/<other_user_id>`
+- `/messaging/send`
+- `/analytics/dashboard`
+
+## MongoDB Collections
+
+The application now uses these collections:
+
+- `users`
+- `requests`
+- `communities`
+- `community_invites`
+- `community_messages`
+- `admin_access_requests`
+- `email_verifications`
+- `volunteer_profiles`
+- `volunteer_ratings`
+- `conversations`
+- `messages`
+
+## Deployment
+
+### Local Development
+
+- Use `.venv/bin/python app.py`
+
+### Production
 
 - Build command: `pip install -r requirements.txt`
 - Start command: `gunicorn app:create_app()`
-- Env vars: `SECRET_KEY`, `MONGO_URI`, `DB_NAME`
+- Required environment variables: `SECRET_KEY`, `MONGO_URI`, `DB_NAME`
+
+## Notes
+
+- The bootstrap script is safe to run multiple times.
+- The application will create MongoDB collections on first use if they do not already exist.
+- The analytics and messaging pages require authentication.
+
+## Next Steps
+
+- Add more request filters and search
+- Expand volunteer skill matching
+- Add exportable analytics reports
+- Add email scheduling/background jobs
