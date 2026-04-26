@@ -78,32 +78,53 @@
             </div>
         </div>
 
-        <!-- Categories -->
+        <!-- Analytics Charts -->
+        {% if atlas_enabled %}
         <div class="row g-3 mb-4">
-            <div class="col-lg-6">
-                <div class="card section-card">
+            <div class="col-lg-7">
+                <div class="card section-card h-100">
                     <div class="card-body">
-                        <h5 class="mb-3">Requests by Category</h5>
+                        <h5 class="mb-3">Top Request Categories (MongoDB Atlas Charts)</h5>
+                        <div class="atlas-chart-wrap">
+                            <iframe
+                                title="Top Request Categories"
+                                src="{{ atlas_charts.categories_url }}"
+                                width="100%"
+                                height="340"
+                                frameborder="0"
+                                loading="lazy"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card section-card h-100">
+                    <div class="card-body">
+                        <h5 class="mb-3">Request Status Distribution (MongoDB Atlas Charts)</h5>
+                        <div class="atlas-chart-wrap">
+                            <iframe
+                                title="Request Status Distribution"
+                                src="{{ atlas_charts.status_url }}"
+                                width="100%"
+                                height="340"
+                                frameborder="0"
+                                loading="lazy"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row g-3 mb-4">
+            <div class="col-lg-7">
+                <div class="card section-card h-100">
+                    <div class="card-body">
+                        <h5 class="mb-3">Top Request Categories</h5>
                         {% if category_metrics %}
-                        <div class="category-list">
-                            {% for cat in category_metrics %}
-                            <div class="category-item d-flex align-items-center justify-content-between mb-3">
-                                <div class="flex-grow-1">
-                                    <strong>{{ cat.category }}</strong>
-                                    <div class="progress" style="height: 4px; margin-top: 4px;">
-                                        <div 
-                                            class="progress-bar" 
-                                            role="progressbar" 
-                                            data-width="{{ cat.width_percent }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-end ms-3">
-                                    <strong>{{ cat.total_requests }}</strong>
-                                    <div class="small text-success">{{ cat.completion_rate }}% ✓</div>
-                                </div>
-                            </div>
-                            {% endfor %}
+                        <div class="chart-wrap" style="height: 320px;">
+                            <canvas id="categoryChart" aria-label="Top request categories chart"></canvas>
                         </div>
                         {% else %}
                         <p class="text-secondary mb-0">No request data available</p>
@@ -112,9 +133,42 @@
                 </div>
             </div>
 
-            <!-- Volunteer Leaderboard -->
+            <div class="col-lg-5">
+                <div class="card section-card h-100">
+                    <div class="card-body">
+                        <h5 class="mb-3">Request Status Distribution</h5>
+                        {% if status_distribution %}
+                        <div class="chart-wrap" style="height: 260px;">
+                            <canvas id="statusChart" aria-label="Request status distribution chart"></canvas>
+                        </div>
+                        <div class="mt-3 d-flex flex-column gap-2">
+                            {% for item in status_distribution %}
+                            <div class="d-flex justify-content-between small">
+                                <span>{{ item.status }}</span>
+                                <strong>{{ item.percentage }}% ({{ item.count }})</strong>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-secondary mb-0">No status distribution data available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row g-3 mb-4">
             <div class="col-lg-6">
-                <div class="card section-card">
+                <div class="card section-card h-100">
+                    <div class="card-body">
+                        <h5 class="mb-3">User Statistics</h5>
+                        <div class="d-flex flex-column gap-3" id="userMixProgress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card section-card h-100">
                     <div class="card-body">
                         <h5 class="mb-3">Top Volunteers</h5>
                         {% if leaderboard %}
@@ -123,9 +177,9 @@
                             <div class="leaderboard-item d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="badge bg-primary" style="min-width: 30px; text-align: center;">
-                                        {% if loop.index == 1 %}🥇
-                                        {% elif loop.index == 2 %}🥈
-                                        {% elif loop.index == 3 %}🥉
+                                        {% if loop.index == 1 %}1
+                                        {% elif loop.index == 2 %}2
+                                        {% elif loop.index == 3 %}3
                                         {% else %}{{ loop.index }}
                                         {% endif %}
                                     </span>
@@ -157,20 +211,29 @@
             </div>
         </div>
 
-        <!-- Daily Activity Chart Placeholder -->
         <div class="row mb-4">
             <div class="col-lg-12">
                 <div class="card section-card">
                     <div class="card-body">
-                        <h5 class="mb-4">Request Activity (Last 30 Days)</h5>
-                        <div style="height: 200px; background: linear-gradient(to right, rgba(36, 95, 205, 0.1), transparent); border-radius: 8px; display: flex; align-items: flex-end; gap: 2px; padding: 20px;">
-                            {% for day in daily_activity[-7:] %}
-                            <div class="activity-bar" data-height="{{ day.height_percent }}" 
-                                 title="{{ day.date }}: {{ day.requests }} requests">
-                            </div>
-                            {% endfor %}
+                        <h5 class="mb-4">Activity Trends (Last 30 Days){% if atlas_enabled %} (MongoDB Atlas Charts){% endif %}</h5>
+                        {% if atlas_enabled %}
+                        <div class="atlas-chart-wrap">
+                            <iframe
+                                title="Activity Trends (Last 30 Days)"
+                                src="{{ atlas_charts.activity_url }}"
+                                width="100%"
+                                height="360"
+                                frameborder="0"
+                                loading="lazy"
+                                allowfullscreen></iframe>
                         </div>
-                        <small class="text-muted d-block mt-2">Last 7 days of activity shown</small>
+                        {% elif daily_activity %}
+                        <div class="chart-wrap" style="height: 320px;">
+                            <canvas id="activityTrendChart" aria-label="Request activity trends chart"></canvas>
+                        </div>
+                        {% else %}
+                        <p class="text-secondary mb-0">No activity data available</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -220,32 +283,181 @@
         padding: 20px;
     }
 
-    .category-item:last-child {
-        margin-bottom: 0;
+    .chart-wrap {
+        position: relative;
+        width: 100%;
+    }
+
+    .atlas-chart-wrap {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .atlas-chart-wrap iframe {
+        display: block;
     }
 
     .leaderboard-item:last-child {
         border-bottom: none;
         padding-bottom: 0;
     }
-
-    .activity-bar {
-        flex: 1;
-        background: var(--primary);
-        border-radius: 4px 4px 0 0;
-        position: relative;
-    }
 </style>
 
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script id="chartCategoryData" type="application/json">{{ category_metrics|tojson }}</script>
+<script id="chartStatusData" type="application/json">{{ status_distribution|tojson }}</script>
+<script id="chartActivityData" type="application/json">{{ daily_activity|tojson }}</script>
+<script id="userMixData" type="application/json">{{ {'total': metrics.total_users, 'residents': metrics.active_residents, 'volunteers': metrics.active_volunteers}|tojson }}</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('[data-width]').forEach(function (el) {
-            el.style.width = el.dataset.width + '%';
-        });
+        const categoryData = JSON.parse(document.getElementById('chartCategoryData').textContent || '[]');
+        const statusData = JSON.parse(document.getElementById('chartStatusData').textContent || '[]');
+        const dailyActivity = JSON.parse(document.getElementById('chartActivityData').textContent || '[]');
+        const userMixData = JSON.parse(document.getElementById('userMixData').textContent || '{}');
 
-        document.querySelectorAll('[data-height]').forEach(function (el) {
-            el.style.height = el.dataset.height + '%';
-        });
+        const palette = {
+            created: '#4f6ef7',
+            completed: '#18b26a',
+            softPurple: '#bd8af7',
+            softBlue: '#7f9cf5',
+            softGreen: '#79c8a7',
+            softAmber: '#f4b266',
+            softSlate: '#94a3b8'
+        };
+
+        if (categoryData.length && document.getElementById('categoryChart')) {
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'bar',
+                data: {
+                    labels: categoryData.map(item => item.category),
+                    datasets: [{
+                        label: 'Requests',
+                        data: categoryData.map(item => item.total_requests),
+                        backgroundColor: '#6d87f5',
+                        borderRadius: 8,
+                        maxBarThickness: 52
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: (ctx) => {
+                                    const source = categoryData[ctx.dataIndex];
+                                    return `Completion: ${source.completion_rate}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, minRotation: 45 } },
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        if (statusData.length && document.getElementById('statusChart')) {
+            new Chart(document.getElementById('statusChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: statusData.map(item => item.status),
+                    datasets: [{
+                        data: statusData.map(item => item.count),
+                        backgroundColor: [
+                            palette.softPurple,
+                            palette.softBlue,
+                            palette.softGreen,
+                            palette.softAmber,
+                            palette.softSlate
+                        ]
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutout: '58%',
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        if (dailyActivity.length && document.getElementById('activityTrendChart')) {
+            new Chart(document.getElementById('activityTrendChart'), {
+                type: 'line',
+                data: {
+                    labels: dailyActivity.map(item => item.date),
+                    datasets: [
+                        {
+                            label: 'Created',
+                            data: dailyActivity.map(item => item.requests),
+                            borderColor: palette.created,
+                            backgroundColor: 'transparent',
+                            tension: 0.35,
+                            pointRadius: 3,
+                            pointHoverRadius: 4
+                        },
+                        {
+                            label: 'Completed',
+                            data: dailyActivity.map(item => item.completed),
+                            borderColor: palette.completed,
+                            backgroundColor: 'transparent',
+                            tension: 0.35,
+                            pointRadius: 3,
+                            pointHoverRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        const totalUsers = Number(userMixData.total) || 0;
+        const residentUsers = Number(userMixData.residents) || 0;
+        const volunteerUsers = Number(userMixData.volunteers) || 0;
+        const bothUsers = Math.max(totalUsers - residentUsers - volunteerUsers, 0);
+
+        const mixRows = [
+            { label: 'Residents', value: residentUsers, color: '#a78bfa' },
+            { label: 'Volunteers', value: volunteerUsers, color: '#79c8a7' },
+            { label: 'Both', value: bothUsers, color: '#22c55e' }
+        ];
+
+        const userMixRoot = document.getElementById('userMixProgress');
+        if (userMixRoot) {
+            userMixRoot.innerHTML = mixRows.map((row) => {
+                const percentage = totalUsers > 0 ? ((row.value / totalUsers) * 100) : 0;
+                return `
+                    <div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>${row.label}</span>
+                            <strong>${row.value} (${percentage.toFixed(0)}%)</strong>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar" style="width:${percentage}%; background:${row.color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
     });
 </script>
+{% endblock %}
 {% endblock %}

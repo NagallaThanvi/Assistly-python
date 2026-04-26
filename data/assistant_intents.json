@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "intents": [
+    {
+      "name": "greeting",
+      "samples": [
+        "hello",
+        "hi",
+        "hey",
+        "good morning",
+        "start"
+      ]
+    },
+    {
+      "name": "request_summary",
+      "samples": [
+        "show my request summary",
+        "my request status",
+        "how many requests do i have",
+        "show my tasks",
+        "what is my progress"
+      ]
+    },
+    {
+      "name": "create_request",
+      "samples": [
+        "create request",
+        "i want to raise a request",
+        "new help request",
+        "how do i create a request",
+        "submit request"
+      ]
+    },
+    {
+      "name": "leaderboard",
+      "samples": [
+        "open leaderboard",
+        "show leaderboard",
+        "my milestones",
+        "how is my score calculated",
+        "rewards"
+      ]
+    },
+    {
+      "name": "profile",
+      "samples": [
+        "open profile",
+        "account settings",
+        "edit my profile",
+        "profile details",
+        "manage account"
+      ]
+    },
+    {
+      "name": "notifications",
+      "samples": [
+        "open notifications",
+        "show alerts",
+        "request notifications",
+        "latest updates",
+        "notification center"
+      ]
+    },
+    {
+      "name": "map_help",
+      "samples": [
+        "show map insights",
+        "focus my location",
+        "nearby requests",
+        "open requests on map",
+        "location help"
+      ]
+    },
+    {
+      "name": "help",
+      "samples": [
+        "help",
+        "what can you do",
+        "assistant commands",
+        "show available actions",
+        "guide me"
+      ]
+    }
+  ]
+}

@@ -124,6 +124,29 @@ def get_request_metrics_by_category(db, days: int = 30):
     ]
 
 
+def get_request_status_distribution(db, days: int = 30):
+    """Get request status distribution with percentages for chart rendering."""
+    cutoff_date = datetime.utcnow() - timedelta(days=days)
+
+    stats = list(
+        _requests(db).aggregate([
+            {"$match": {"created_at": {"$gte": cutoff_date}}},
+            {"$group": {"_id": "$status", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+        ])
+    )
+
+    total = sum(item["count"] for item in stats)
+    return [
+        {
+            "status": item["_id"] or "Unknown",
+            "count": item["count"],
+            "percentage": round((item["count"] / total * 100), 2) if total > 0 else 0,
+        }
+        for item in stats
+    ]
+
+
 def get_volunteer_leaderboard(db, limit: int = 20):
     """Get leaderboard of top volunteers."""
     leaderboard = list(
@@ -212,14 +235,29 @@ def get_daily_activity(db, days: int = 30):
         ])
     )
     
-    return [
-        {
-            "date": stat["_id"],
+    activity_map = {
+        stat["_id"]: {
             "requests": stat["requests"],
             "completed": stat["completed"],
         }
         for stat in daily_stats
-    ]
+    }
+
+    result = []
+    start_date = cutoff_date.date()
+    for offset in range(days):
+        day = start_date + timedelta(days=offset)
+        day_key = day.strftime("%Y-%m-%d")
+        day_data = activity_map.get(day_key, {"requests": 0, "completed": 0})
+        result.append(
+            {
+                "date": day_key,
+                "requests": day_data["requests"],
+                "completed": day_data["completed"],
+            }
+        )
+
+    return result
 
 
 def get_user_insights(db, user_id: str):

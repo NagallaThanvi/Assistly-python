@@ -77,6 +77,9 @@ EMAIL_FROM=your-email@example.com
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://127.0.0.1:5000/auth/google/callback
+ATLAS_CHART_STATUS_URL=https://charts.mongodb.com/charts-<app-id>/embed/charts?id=<status-chart-id>&maxDataAge=3600&theme=light&autoRefresh=true
+ATLAS_CHART_CATEGORIES_URL=https://charts.mongodb.com/charts-<app-id>/embed/charts?id=<categories-chart-id>&maxDataAge=3600&theme=light&autoRefresh=true
+ATLAS_CHART_ACTIVITY_URL=https://charts.mongodb.com/charts-<app-id>/embed/charts?id=<activity-chart-id>&maxDataAge=3600&theme=light&autoRefresh=true
 ```
 
 4. Bootstrap collections and indexes.
@@ -182,6 +185,9 @@ Render is the best free-first platform for this app because it supports Python w
   - `GOOGLE_CLIENT_ID`
   - `GOOGLE_CLIENT_SECRET`
   - `GOOGLE_REDIRECT_URI`
+  - `ATLAS_CHART_STATUS_URL` (optional, enables Atlas embed in analytics dashboard)
+  - `ATLAS_CHART_CATEGORIES_URL` (optional, enables Atlas embed in analytics dashboard)
+  - `ATLAS_CHART_ACTIVITY_URL` (optional, enables Atlas embed in analytics dashboard)
 6. Deploy the service.
 7. After the first successful deploy, run `bootstrap_collections.py` once if needed to ensure collections and indexes exist.
 

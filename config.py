@@ -16,6 +16,9 @@ class Config:
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
     GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "http://127.0.0.1:5000/auth/google/callback")
+    ATLAS_CHART_STATUS_URL = os.getenv("ATLAS_CHART_STATUS_URL", "")
+    ATLAS_CHART_CATEGORIES_URL = os.getenv("ATLAS_CHART_CATEGORIES_URL", "")
+    ATLAS_CHART_ACTIVITY_URL = os.getenv("ATLAS_CHART_ACTIVITY_URL", "")
 
 
 def _to_bool(value: str | None) -> bool:

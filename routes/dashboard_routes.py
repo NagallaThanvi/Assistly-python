@@ -14,6 +14,7 @@ from analytics.analytics import generate_admin_charts
 from models.community_model import ensure_default_communities, list_communities, get_user_communities, get_community
 from models.request_model import list_all_requests, list_open_requests_for_volunteer, list_open_requests_for_volunteer_in_communities, list_user_requests, request_counts
 from models.user_model import count_total_users, list_users
+from utils.intent_model_service import get_intent_model
 
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -377,6 +378,20 @@ def _parse_float(value):
         return None
 
 
+def _normalize_message_from_intent(intent: str) -> str:
+    intent_map = {
+        "greeting": "hello",
+        "request_summary": "show my request summary",
+        "create_request": "create request",
+        "leaderboard": "open leaderboard",
+        "profile": "open profile",
+        "notifications": "open notifications",
+        "map_help": "show map insights",
+        "help": "help",
+    }
+    return intent_map.get(intent, "")
+
+
 def _build_assistant_response(db, user_id: str, user_name: str, mode: str, message: str):
     text = (message or "").strip()
     lowered = text.lower()
@@ -479,14 +494,35 @@ def assistant_chat():
         return jsonify({"success": False, "message": "Message is required."}), 400
 
     mode = str(current_user.doc.get("mode", "resident"))
+
+    intent_result = {"intent": "unknown", "confidence": 0.0}
+    normalized_message = ""
+    try:
+        intent_result = get_intent_model().predict(message)
+        normalized_message = _normalize_message_from_intent(str(intent_result.get("intent", "unknown")))
+    except Exception:
+        intent_result = {"intent": "unknown", "confidence": 0.0}
+        normalized_message = ""
+
     response = _build_assistant_response(
         current_app.db,
         current_user.id,
         str(current_user.name or "there"),
         mode,
-        message,
+        normalized_message or message,
     )
-    return jsonify({"success": True, **response})
+
+    return jsonify(
+        {
+            "success": True,
+            **response,
+            "intent": {
+                "name": intent_result.get("intent", "unknown"),
+                "confidence": intent_result.get("confidence", 0.0),
+                "used_model": bool(normalized_message),
+            },
+        }
+    )
 
 
 @dashboard_bp.route("/dashboard/map/data")
